@@ -41,10 +41,10 @@ void ajouter_joueur() {
             scanf("%s", joueurs[nombre_joueur].nom);
             printf("PRENOM : ");
             scanf("%s", joueurs[nombre_joueur].prenom);
-            while(!((joueurs[nombre_joueur].nom >= 97 && joueurs[nombre_joueur].nom <= 122) || (joueurs[nombre_joueur].nom >= 65 && joueurs[nombre_joueur].nom <= 90)))
-            {
-                printf("")
-            }
+            // while(!((joueurs[nombre_joueur].nom >= 97 && joueurs[nombre_joueur].nom <= 122) || (joueurs[nombre_joueur].nom >= 65 && joueurs[nombre_joueur].nom <= 90)))
+            // {
+            //     printf("")
+            // }
             printf("NUMERO DE MAILLOT : ");
             scanf("%d", &joueurs[nombre_joueur].numeroMaillot);
             printf("POSTE : ");
@@ -107,7 +107,6 @@ void afficher_joueur() {
         printf(">>> Aucun joueur existe !\n");
         return;
     }
-
     int choix;
     do {
         printf("\n------------------------------------------------------------\n");
@@ -328,6 +327,103 @@ void rechercher_joueur()
         }
     }
 }
+
+void statistiques()
+{
+    printf("==========>>>Statistiques des joueurs :<==========\n");
+    printf("===> Choisir une fonction : \n");
+    printf("1- Afficher les joueurs avec le plus de buts\n");
+    printf("2- Afficher le joueur le plus age\n");
+    printf("3- Afficher le joueur le plus jeune\n");
+    printf("4- Afficher le nombre total des joueurs\n");
+    printf("5- Meilleur buteur\n");
+    printf("6- Age moyen des joueurs\n");
+    printf("7- Exit\n");
+
+    int choix;
+    printf("Votre choix : ");
+    scanf("%d",&choix);
+    switch(choix)
+    {
+        int max_but;
+        int max_age,min_age;
+        int total_joueurs = nombre_joueur;
+        float moyen_age = 0.0;
+        case 1:  
+          max_but = 0;
+          for(int i = 0; i < nombre_joueur; i++)
+          {
+            if(joueurs[i].buts > max_but)
+            {
+                max_but = joueurs[i].buts;
+            }
+          }
+          for(int i = 0; i < nombre_joueur; i++)
+          {
+              printf("%s est le joueurs qui a plus de buts : %d\n",joueurs[i].nom, joueurs[i].buts);
+          }
+          break;
+        case 2:
+          max_age = 0;
+          for(int i = 0; i < nombre_joueur; i++)
+          {
+            if(joueurs[i].age > max_age)
+            {
+                max_age = joueurs[i].age;
+            }
+          }
+          for(int i = 0; i < nombre_joueur; i++)
+          {
+              printf("%s est le joueurs le plus age : %d\n",joueurs[i].nom, joueurs[i].age);
+              break;
+          }
+        case 3:
+          min_age = max_age;
+          for(int i = 0; i < nombre_joueur; i++)
+          {
+            if(joueurs[i].age < min_age)
+            {
+                min_age = joueurs[i].age;
+            }
+          }
+          for(int i = 0; i < nombre_joueur; i++)
+          {
+              printf("%s est le joueurs le plus jeune : %d\n",joueurs[i].nom, min_age);
+              break;
+          }
+        case 4:
+             printf("Le nombre total des joueurs est : %d\n",total_joueurs);
+            break;
+        case 5:
+            max_but = 0;
+            for(int i = 0; i < nombre_joueur; i++)
+            {
+                if(joueurs[i].buts > max_but)
+                {
+                    max_but = joueurs[i].buts;
+                }
+            }
+            for(int i = 0; i < nombre_joueur; i++)
+            {
+                if(joueurs[i].buts == max_but)
+                {
+                    printf("Le meilleur buteur est : %s avec %d buts\n", joueurs[i].nom, joueurs[i].buts);
+                }
+            }
+            break;
+        case 6:
+           for(int i = 0; i < nombre_joueur; i++)
+           {
+             moyen_age += (float)joueurs[i].age;
+           }
+            moyen_age /= (float)nombre_joueur;
+            printf("le moyene de l'age dans l'equipe c'est : %.2f\n",moyen_age);
+           break;
+        default:
+           printf("AUCUN CHOIX EXIST\n");
+    }
+
+}
 int main() {
     int choix;
     printf("======> Gestion Equipe de Football <======\n");
@@ -339,6 +435,7 @@ int main() {
         printf("3- Modifier un joueur\n");
         printf("4- Supprimer un joueur\n");
         printf("5- Rechercher sur un joueur\n");
+        printf("6- Statistiques\n");
         printf("7- Exit\n");
         printf("Votre choix : ");
         scanf("%d", &choix);
@@ -360,6 +457,9 @@ int main() {
                rechercher_joueur();
                break;
             case 6:
+               statistiques();
+               break;
+            case 7:
                printf("Exit...\n"); 
                break;
             default: printf("Choix invalide !\n");
