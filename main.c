@@ -41,6 +41,10 @@ void ajouter_joueur() {
             scanf("%s", joueurs[nombre_joueur].nom);
             printf("PRENOM : ");
             scanf("%s", joueurs[nombre_joueur].prenom);
+            while(!((joueurs[nombre_joueur].nom >= 97 && joueurs[nombre_joueur].nom <= 122) || (joueurs[nombre_joueur].nom >= 65 && joueurs[nombre_joueur].nom <= 90)))
+            {
+                printf("")
+            }
             printf("NUMERO DE MAILLOT : ");
             scanf("%d", &joueurs[nombre_joueur].numeroMaillot);
             printf("POSTE : ");
@@ -142,9 +146,9 @@ void afficher_joueur() {
                 for (int i = 0; i < nombre_joueur; i++) {
                     if (strcmp(joueurs[i].poste, postes[p]) == 0) {
                         printf("ID:%d | NOM:%s | PRENOM:%s | MAILLOT:%d | POSTE:%s | AGE:%d | BUTS:%d | DATE:%s | STATUT:%s\n",
-                               joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
-                               joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
-                               joueurs[i].dateinscription, joueurs[i].statut);
+                        joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
+                        joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
+                        joueurs[i].dateinscription, joueurs[i].statut);
                     }
                 }
             }
@@ -250,9 +254,9 @@ void supprimer_joueur() {
     for (int i = 0; i < nombre_joueur; i++) {
         printf("------------------------------------------------------------\n");
         printf("ID:%d | NOM:%s | PRENOM:%s | MAILLOT:%d | POSTE:%s | AGE:%d | BUTS:%d | DATE:%s | STATUT:%s\n",
-               joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
-               joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
-               joueurs[i].dateinscription, joueurs[i].statut);
+        joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
+        joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
+        joueurs[i].dateinscription, joueurs[i].statut);
     }
     printf("------------------------------------------------------------\n");
     printf("Merci de Choisir le ID du Joueur Pour Supprimer : ");
@@ -273,19 +277,56 @@ void supprimer_joueur() {
         }
     }
 
-    if (!found) {
+    if (found != 1) {
         printf(">>> Aucun joueur avec cet ID !\n");
     }
 }
 
-void recherche_joueur()
+void rechercher_joueur()
 {
     int id;
+    char name[100];
+    int choix;
     printf("------------------------------------------------------------\n");
-    printf("Entrer ID du joueur : ");
-    scanf("%d",&id);
-
-
+    printf("1- Rechercher par ID\n");
+    printf("2- Rechercher par NOM\n");
+    printf("Votre choix : ");
+    scanf("%d",&choix);
+    if(choix == 1)
+    {
+        printf("------------------------------------------------------------\n");
+        printf("Entrer ID du joueur : ");
+        scanf("%d",&id);
+        for(int i = 0; i < nombre_joueur; i++)
+        {
+            if(joueurs[i].id == id)
+            {
+                printf("------------------------------------------------------------\n");
+                printf("ID:%d | NOM:%s | PRENOM:%s | MAILLOT:%d | POSTE:%s | AGE:%d | BUTS:%d | DATE:%s | STATUT:%s\n",
+                    joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
+                    joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
+                    joueurs[i].dateinscription, joueurs[i].statut);
+            }
+            printf("------------------------------------------------------------\n");
+        }
+    }else if(choix == 2)
+    {
+        printf("------------------------------------------------------------\n");
+        printf("Entrer NOM du joueur : ");
+        scanf("%s",name);
+        for(int i = 0; i < nombre_joueur; i++)
+        {
+            if(strcmp(joueurs[i].nom,name) == 0)
+            {
+                printf("------------------------------------------------------------\n");
+                printf("ID:%d | NOM:%s | PRENOM:%s | MAILLOT:%d | POSTE:%s | AGE:%d | BUTS:%d | DATE:%s | STATUT:%s\n",
+                    joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
+                    joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
+                    joueurs[i].dateinscription, joueurs[i].statut);
+            }
+            printf("------------------------------------------------------------\n");
+        }
+    }
 }
 int main() {
     int choix;
@@ -296,7 +337,8 @@ int main() {
         printf("1- Ajouter un joueur\n");
         printf("2- Afficher la liste des joueurs\n");
         printf("3- Modifier un joueur\n");
-        printf("4- Suuprimer un joueur\n");
+        printf("4- Supprimer un joueur\n");
+        printf("5- Rechercher sur un joueur\n");
         printf("7- Exit\n");
         printf("Votre choix : ");
         scanf("%d", &choix);
@@ -315,8 +357,8 @@ int main() {
                supprimer_joueur();
                break;
             case 5:
-            //    rechercher_joueur();
-            //    break;
+               rechercher_joueur();
+               break;
             case 6:
                printf("Exit...\n"); 
                break;
@@ -326,4 +368,3 @@ int main() {
 
     return 0;
 }
-
