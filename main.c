@@ -2,6 +2,7 @@
 #include <string.h>
 
 
+int next_id = 1;
 struct joueur {
     int id;
     char nom[50];
@@ -16,8 +17,13 @@ struct joueur {
 
 struct joueur joueurs[100];
 int nombre_joueur = 0;
-
 void ajouter_joueur() {
+
+    if(nombre_joueur >= 100)
+    {
+        printf(">>> Impossible d'ajouter plus de joueurs !\n");
+        return;
+    }
     int choix;
     do {
         printf("------------------------------------------------------------\n");
@@ -30,7 +36,7 @@ void ajouter_joueur() {
         scanf("%d", &choix);
 
         if (choix == 1) {
-            joueurs[nombre_joueur].id = nombre_joueur + 1;
+            joueurs[nombre_joueur].id = next_id++;
             printf("NOM : ");
             scanf("%s", joueurs[nombre_joueur].nom);
             printf("PRENOM : ");
@@ -47,7 +53,6 @@ void ajouter_joueur() {
             scanf("%s", joueurs[nombre_joueur].dateinscription);
             printf("STATUT : ");
             scanf("%s", joueurs[nombre_joueur].statut);
-
             nombre_joueur++;
             printf("------------------------------------------------------------\n");
             printf(">>> JOUEUR AJOUTE AVEC SUCCES !\n");
@@ -57,9 +62,14 @@ void ajouter_joueur() {
             printf("Combien de joueurs voulez-vous ajouter ? ");
             scanf("%d", &n);
 
+            if(nombre_joueur + n > 100)
+            {
+                printf(">>> Impossible d'ajouter plus de joueurs !\n");
+                return;
+            }
             for (int i = 0; i < n; i++) {
-                joueurs[nombre_joueur].id = nombre_joueur + 1;
                 printf("\n--- Joueur %d ---\n", i + 1);
+                joueurs[nombre_joueur].id = next_id++;
                 printf("NOM : ");
                 scanf("%s", joueurs[nombre_joueur].nom);
                 printf("PRENOM : ");
@@ -80,7 +90,12 @@ void ajouter_joueur() {
                 printf(">>> Joueur %d ajoute avec succes !\n", i + 1);
             }
         }
-
+        // for (int i = 0; i < nombre_joueur; i++) {
+        //         printf("ID:%d | NOM:%s | PRENOM:%s | MAILLOT:%d | POSTE:%s | AGE:%d | BUTS:%d | DATE:%s | STATUT:%s\n",
+        //         joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
+        //         joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
+        //         joueurs[i].dateinscription, joueurs[i].statut);
+        //     }
     } while (choix != 3);
 }
 void afficher_joueur() {
@@ -114,9 +129,9 @@ void afficher_joueur() {
             printf("\n====== LISTE DES JOUEURS TRIES PAR NOM ======\n");
             for (int i = 0; i < nombre_joueur; i++) {
                 printf("ID:%d | NOM:%s | PRENOM:%s | MAILLOT:%d | POSTE:%s | AGE:%d | BUTS:%d | DATE:%s | STATUT:%s\n",
-                       joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
-                       joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
-                       joueurs[i].dateinscription, joueurs[i].statut);
+                joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
+                joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
+                joueurs[i].dateinscription, joueurs[i].statut);
             }
 
         } else if (choix == 2) {
@@ -226,38 +241,51 @@ void mod_joueurs()
     }
 }
 
-void supprimer_joueur(){
+void supprimer_joueur() {
     int id;
     if (nombre_joueur == 0) {
         printf(">>> Aucun joueur existe !\n");
         return;
     }
-    for(int i = 0; i < nombre_joueur; i++)
-    {
+    for (int i = 0; i < nombre_joueur; i++) {
         printf("------------------------------------------------------------\n");
         printf("ID:%d | NOM:%s | PRENOM:%s | MAILLOT:%d | POSTE:%s | AGE:%d | BUTS:%d | DATE:%s | STATUT:%s\n",
-        joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
-        joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
-        joueurs[i].dateinscription, joueurs[i].statut);
+               joueurs[i].id, joueurs[i].nom, joueurs[i].prenom, joueurs[i].numeroMaillot,
+               joueurs[i].poste, joueurs[i].age, joueurs[i].buts,
+               joueurs[i].dateinscription, joueurs[i].statut);
     }
     printf("------------------------------------------------------------\n");
     printf("Merci de Choisir le ID du Joueur Pour Supprimer : ");
     scanf("%d", &id);
-    for(int i = 0; i < nombre_joueur; i++)
-    {
-        for(int i = 0; i < nombre_joueur - 1; i++)
-        {
-            if(joueurs[i].id == id)
-            {
-                joueurs[i] = joueurs[i + 1];
+
+    int found = 0;
+    for (int i = 0; i < nombre_joueur; i++) {
+        if (joueurs[i].id == id) {
+            for (int j = i; j < nombre_joueur - 1; j++) {
+                joueurs[j] = joueurs[j + 1];
             }
+            nombre_joueur--;
+            found = 1;
+            printf("------------------------------------------------------------\n");
+            printf(">>> Joueur avec ID %d supprimé avec succès !\n", id);
+            printf("------------------------------------------------------------\n");
+            break;
         }
-        nombre_joueur--;
-        printf("------------------------------------------------------------\n");
-        printf(">>> Joueur avec ID %d supprimé avec succès !\n", id);
-        printf("------------------------------------------------------------\n");
-        break;
     }
+
+    if (!found) {
+        printf(">>> Aucun joueur avec cet ID !\n");
+    }
+}
+
+void recherche_joueur()
+{
+    int id;
+    printf("------------------------------------------------------------\n");
+    printf("Entrer ID du joueur : ");
+    scanf("%d",&id);
+
+
 }
 int main() {
     int choix;
@@ -287,6 +315,9 @@ int main() {
                supprimer_joueur();
                break;
             case 5:
+            //    rechercher_joueur();
+            //    break;
+            case 6:
                printf("Exit...\n"); 
                break;
             default: printf("Choix invalide !\n");
@@ -295,3 +326,4 @@ int main() {
 
     return 0;
 }
+
